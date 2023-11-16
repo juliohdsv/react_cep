@@ -58,13 +58,13 @@ export default function Home(){
         <div className="container-btns flex flex-col justify-center items-center w-full gap-2">
           <button 
             type="submit"
-            className="bg-black font-semibold w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg hover:bg-red-600 transition-all duration-300"
+            className="bg-yellow-700 font-semibold w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg hover:bg-red-600 transition-all duration-300"
           >
             Buscar
           </button>
           <button 
             type="reset"
-            className="bg-black font-semibold w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg hover:bg-red-600 transition-all duration-300"
+            className="bg-yellow-700 font-semibold w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg hover:bg-red-600 transition-all duration-300"
           >
             Limpar
           </button>
