@@ -51,16 +51,24 @@ export default function Home(){
             {...register("zipocode",{required: true})} 
             type="text" 
             placeholder="Exemplo: 0000000"
-            className="w-2/3 lg:w-2/12 xl:w-2/12 rounded-lg px-2"
+            className="w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg px-2"
           />
           {errors.zipocode && <span className="text-yellow-300 w-2/3 lg:w-2/12 xl:w-2/12 font-semibold text-sm">{errors.zipocode.message}</span>}
         </div>
+        <div className="container-btns flex flex-col justify-center items-center w-full gap-2">
           <button 
             type="submit"
-            className="bg-black font-semibold w-2/3 lg:w-2/12 xl:w-2/12 h-6 rounded-lg hover:bg-red-600 transition-all duration-300"
+            className="bg-black font-semibold w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg hover:bg-red-600 transition-all duration-300"
           >
             Buscar
           </button>
+          <button 
+            type="reset"
+            className="bg-black font-semibold w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg hover:bg-red-600 transition-all duration-300"
+          >
+            Limpar
+          </button>
+        </div>
       </form>
 
       <div className="container-results w-full h-1/2 flex flex-col justify-center items-center gap-4">
@@ -69,25 +77,25 @@ export default function Home(){
           type="text"
           value={state} 
           placeholder="Estado"
-          className="w-2/3 lg:w-2/12 xl:w-2/12 rounded-lg px-2"
+          className="w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg px-2"
         />
         <input 
           type="text" 
           value={city}
           placeholder="Cidade"
-          className="w-2/3 lg:w-2/12 xl:w-2/12 rounded-lg px-2"
+          className="w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg px-2"
         />
         <input 
           type="text" 
           value={neigh}
           placeholder="Bairro"
-          className="w-2/3 lg:w-2/12 xl:w-2/12 rounded-lg px-2"
+          className="w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg px-2"
         />
         <input 
           type="text" 
           value={street}
           placeholder="Rua/Av"
-          className="w-2/3 lg:w-2/12 xl:w-2/12 rounded-lg px-2"
+          className="w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg px-2"
         />
       </div>
     </div>
