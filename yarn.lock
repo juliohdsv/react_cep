@@ -5992,6 +5992,11 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
+lucide-react@^0.314.0:
+  version "0.314.0"
+  resolved "https://registry.yarnpkg.com/lucide-react/-/lucide-react-0.314.0.tgz#909b59df206f6da9dbe51589fe7c567e1c03565f"
+  integrity sha512-c2zOW7TOyKxPCaSs1og2lFdoI3SR4iii3yrZJU2Zpdc78nOw4fUmrcFNultaCiwZcr4CyiKdzjMdvKNlBBk+UQ==
+
 luxon@^3.2.1:
   version "3.4.4"
   resolved "https://registry.yarnpkg.com/luxon/-/luxon-3.4.4.tgz#cf20dc27dc532ba41a169c43fdcc0063601577af"

@@ -2,6 +2,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 import cepApi from "../../services/cepApi";
 
@@ -22,21 +23,53 @@ export default function Home(){
     resolver: zodResolver(zcForSchema),
   });
 
-  const [ state, setState] = useState<string>('');
-  const [ city, setCity] = useState<string>('');
-  const [ neigh, setNeigh] = useState<string>('');
-  const [ street, setStreet] = useState<string>('');
+  const [ state, setState ] = useState<string>('');
+  const [ city, setCity ] = useState<string>('');
+  const [ neigh, setNeigh ] = useState<string>('');
+  const [ street, setStreet ] = useState<string>('');
+  const [ check, setCheck ] = useState<string>('');
+  const [ loading, setLoading ] = useState<boolean>(false);
 
   async function getData(value:any){
 
-    const { data } = await cepApi.get(`/cep/v2/${value.zipocode}`);
+    try{
+      setLoading(true);
 
-    if(data){
-      setState(data.state);
-      setCity(data.city);
-      setNeigh(data.neighborhood);
-      setStreet(data.street);
+      if(check === value.zipocode){
+        setLoading(false);
+        return;
+      }
+
+      setCheck(value.zipocode);
+      clearStates();
+
+      const { data } = await cepApi.get(`/cep/v2/${value.zipocode}`);
+      if(data){
+        setState(data.state);
+        setCity(data.city);
+        setNeigh(data.neighborhood);
+        setStreet(data.street);
+      }
+
+      setLoading(false)
+
     }
+    catch(err){
+      setLoading(true)
+      
+      console.log(`Erro na API: ${err}`);
+      alert("Cep não localizado!");
+      clearStates();
+
+      setLoading(false)
+    }
+  }
+
+  function clearStates(){
+    setState("");
+    setCity("");
+    setNeigh("");
+    setStreet("");
   }
 
   return(
@@ -58,13 +91,14 @@ export default function Home(){
         <div className="container-btns flex flex-col justify-center items-center w-full gap-2">
           <button 
             type="submit"
-            className="bg-yellow-700 font-semibold w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg hover:bg-red-600 transition-all duration-300"
+            className="flex justify-center items-center bg-black font-semibold w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg hover:bg-gray-600 transition-all duration-300"
           >
-            Buscar
+            {loading === true ? <Loader2 className="animate-spin"/> : "Buscar"}
           </button>
           <button 
             type="reset"
-            className="bg-yellow-700 font-semibold w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg hover:bg-red-600 transition-all duration-300"
+            onClick={clearStates}
+            className="bg-black font-semibold w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg hover:bg-gray-600 transition-all duration-300"
           >
             Limpar
           </button>
