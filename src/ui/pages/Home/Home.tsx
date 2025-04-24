@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 
-import cepApi from "../../services/cepApi";
+import { CepApiService } from "../../../app/services/CepApi.service";
 
 const zcForSchema = z.object({
   zipocode: z.string()
@@ -15,10 +15,10 @@ type zcFormData = z.infer<typeof zcForSchema>
 
 export default function Home(){
 
-  const { 
-    register, 
-    handleSubmit, 
-    formState: { errors } } 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors } }
     = useForm<zcFormData>({
     resolver: zodResolver(zcForSchema),
   });
@@ -43,7 +43,7 @@ export default function Home(){
       setCheck(value.zipocode);
       clearStates();
 
-      const { data } = await cepApi.get(`/cep/v2/${value.zipocode}`);
+      const { data } = await CepApiService.get(`/cep/v2/${value.zipocode}`);
       if(data){
         setState(data.state);
         setCity(data.city);
@@ -56,7 +56,7 @@ export default function Home(){
     }
     catch(err){
       setLoading(true)
-      
+
       console.log(`Erro na API: ${err}`);
       alert("Cep não localizado!");
       clearStates();
@@ -75,27 +75,27 @@ export default function Home(){
   return(
     <div className="container-home flex flex-col justify-center items-center w-full h-screen">
       <h1 className="text-3xl font-bold">Localizar CEP</h1>
-      <form 
-        onSubmit={handleSubmit(getData)} 
+      <form
+        onSubmit={handleSubmit(getData)}
         className="flex flex-col justify-center items-center gap-4 w-full h-1/4"
       >
         <div className="flex flex-col w-full justify-center items-center gap-1">
-          <input 
-            {...register("zipocode",{required: true})} 
-            type="text" 
+          <input
+            {...register("zipocode",{required: true})}
+            type="text"
             placeholder="Exemplo: 0000000"
             className="w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg px-2"
           />
           {errors.zipocode && <span className="text-yellow-300 w-2/3 lg:w-2/12 xl:w-2/12 font-semibold text-sm">{errors.zipocode.message}</span>}
         </div>
         <div className="container-btns flex flex-col justify-center items-center w-full gap-2">
-          <button 
+          <button
             type="submit"
             className="flex justify-center items-center bg-black font-semibold w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg hover:bg-gray-600 transition-all duration-300"
           >
             {loading === true ? <Loader2 className="animate-spin"/> : "Buscar"}
           </button>
-          <button 
+          <button
             type="reset"
             onClick={clearStates}
             className="bg-black font-semibold w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg hover:bg-gray-600 transition-all duration-300"
@@ -107,26 +107,26 @@ export default function Home(){
 
       <div className="container-results w-full h-1/2 flex flex-col justify-center items-center gap-4">
         <h1 className="text-xl font-bold">Informações</h1>
-        <input 
+        <input
           type="text"
-          value={state} 
+          value={state}
           placeholder="Estado"
           className="w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg px-2"
         />
-        <input 
-          type="text" 
+        <input
+          type="text"
           value={city}
           placeholder="Cidade"
           className="w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg px-2"
         />
-        <input 
-          type="text" 
+        <input
+          type="text"
           value={neigh}
           placeholder="Bairro"
           className="w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg px-2"
         />
-        <input 
-          type="text" 
+        <input
+          type="text"
           value={street}
           placeholder="Rua/Av"
           className="w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg px-2"
