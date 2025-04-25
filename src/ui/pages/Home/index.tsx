@@ -89,16 +89,6 @@ export default function Home(){
               Link do endereço Google maps
             </Link>
           </div>
-          {/* <iframe
-            width="100%"
-            height="300"
-            style={{ border: 0 }}
-            loading="lazy"
-            allowFullScreen
-            referrerPolicy="no-referrer-when-downgrade"
-            src={`https://www.google.com/maps/dir/${address()?.location.coordinates.latitude},${address()?.location.coordinates.longitude}`}
-          > teste
-          </iframe> */}
         </div>
       )}
     </div>
