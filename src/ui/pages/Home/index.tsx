@@ -73,7 +73,7 @@ export default function Home(){
       </form>
 
       {visible && (
-        <div className="w-10/12 flex flex-col items-center gap-4 border-t border-gray-300 text-black font-mono">
+        <div className="w-10/12 lg:w-[300px] flex flex-col items-center gap-4 border-t border-gray-300 text-black font-mono">
           <h1 className="w-full text-xl text-teal-800 font-bold mt-10">Endereço:</h1>
           <div className="w-11/12 flex flex-col">
             <span className="w-11/12 text-md">{`CEP ${address()?.cep}`}</span>
