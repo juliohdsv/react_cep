@@ -1,9 +1,11 @@
 import { z } from "zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-hot-toast";
 import { CepApiService } from "../../../app/services/CepApi.service";
-import { IOutput } from "./IHome";
+import { localStorageKeys } from "../../../app/config/localStorageKeys";
+import { sleep } from "../../../app/utils/sleep";
 
 const schema = z.object({
   zipocode: z.string()
@@ -15,6 +17,7 @@ type zcFormData = z.infer<typeof schema>
 
 export function useHomeController(){
 
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit: hookFormHandleSubmit,
@@ -23,12 +26,16 @@ export function useHomeController(){
     resolver: zodResolver(schema),
   });
 
-  const handleSubmit = hookFormHandleSubmit(async (input)=>{
+  const handleSubmit = hookFormHandleSubmit(async ({ zipocode })=>{
     try{
-      const data: IOutput = await CepApiService.get(`/cep/v2/${input}`);
+      setIsLoading(true);
+      await sleep(2000);
+      const { data } = await CepApiService.get(`/cep/v2/${zipocode}`);
 
       if(!data) return toast.error("Erro na consulta, tenta novamente.");
-      console.log(data);
+      localStorage.setItem(localStorageKeys.API_DATA, JSON.stringify(data));
+      setIsLoading(false);
+      // https://www.google.com/maps/dir/-23.5336746,-46.5746386
     }catch{
       toast.error("Server internal error.");
     }
@@ -37,6 +44,7 @@ export function useHomeController(){
   return{
     handleSubmit,
     errors,
-    register
+    register,
+    isLoading
   };
 }

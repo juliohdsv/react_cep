@@ -1,6 +1,7 @@
 // import { useState } from "react";
-// import { Loader2 } from "lucide-react";
+import { CrossCircledIcon } from "@radix-ui/react-icons"
 import { useHomeController } from "./useHome.controller";
+import { Spinner } from "../../components/Spinner";
 
 export default function Home(){
 
@@ -8,66 +9,55 @@ export default function Home(){
     errors,
     handleSubmit,
     register,
+    isLoading
   } = useHomeController();
 
 
   return(
-    <div className="flex flex-col justify-center items-center w-screen h-screen bg-zinc-700">
-
-      <h1 className="text-3xl font-bold">Localizar CEP</h1>
-
-        <form
-          onSubmit={handleSubmit}
-          className="w-11/12 lg:w-1/5 h-1/5 flex flex-col gap-2"
-        >
+    <div className="
+      w-screen h-screen flex flex-col items-center text-teal-600 bg-zinc-200
+    ">
+      <h1 className="text-3xl font-bold tracking-widest mt-14">LOCALIZAR CEP</h1>
+      <form
+        onSubmit={handleSubmit}
+        className="w-11/12 lg:w-[300px] min-h-[200px] max-h-[300px] flex flex-col justify-center items-center gap-6 text-zinc-600"
+      >
+        <div className="w-11/12 flex flex-col gap-2">
           <input
             type="text"
             placeholder="Exemplo: 0000000"
-            className="w-full h-8 rounded-lg px-2"
+            className="w-full h-8 rounded-xl px-3 border border-teal-600 focus:border-teal-800 transition-all"
             {...register("zipocode")}
           />
-          {errors.zipocode && <span className="text-yellow-300 w-2/3 lg:w-2/12 xl:w-2/12 font-semibold text-sm">{errors.zipocode.message}</span>}
+          {errors.zipocode && (
+            <span className="
+              text-red-900 w-full text-sm flex flex-row items-center gap-2 px-1
+            ">
+              <CrossCircledIcon/>
+              {errors.zipocode.message}
+            </span>
+          )}
+        </div>
 
-
-        <div className="container-btns flex flex-col justify-center items-center w-full gap-2">
+        <div className="w-full flex flex-col justify-center items-center gap-2 text-white">
           <button
             type="submit"
-            className="flex justify-center items-center bg-black font-semibold w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg hover:bg-gray-600 transition-all duration-300"
+            className="w-11/12 h-8 flex justify-center items-center bg-teal-600 font-normal text-20 rounded-xl hover:bg-teal-800 transition-all duration-300 tracking-tight"
           >
-            {/* {loading === true ? <Loader2 className="animate-spin"/> : "Buscar"} */}
+            {isLoading ? <Spinner/> : "Buscar"}
           </button>
           <button
             type="reset"
-
-            className="bg-black font-semibold w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg hover:bg-gray-600 transition-all duration-300"
+            className="w-11/12 h-8 bg-teal-600 font-normal text-20 rounded-xl hover:bg-teal-800 transition-all duration-300 tracking-tight"
           >
             Limpar
           </button>
         </div>
       </form>
 
-      <div className="container-results w-full h-1/2 flex flex-col justify-center items-center gap-4">
-        <h1 className="text-xl font-bold">Informações</h1>
-        <input
-          type="text"
-          placeholder="Estado"
-          className="w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg px-2"
-        />
-        <input
-          type="text"
-          placeholder="Cidade"
-          className="w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg px-2"
-        />
-        <input
-          type="text"
-          placeholder="Bairro"
-          className="w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg px-2"
-        />
-        <input
-          type="text"
-          placeholder="Rua/Av"
-          className="w-2/3 lg:w-2/12 xl:w-2/12 h-8 rounded-lg px-2"
-        />
+      <div className="w-full flex flex-col justify-center items-center gap-4">
+        <h1 className="text-xl font-bold">Detalhes do Endereço</h1>
+
       </div>
     </div>
   );
