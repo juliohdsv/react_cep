@@ -1,7 +1,9 @@
-// import { useState } from "react";
 import { CrossCircledIcon } from "@radix-ui/react-icons"
+import { Link } from "react-router-dom";
 import { useHomeController } from "./useHome.controller";
 import { Spinner } from "../../components/Spinner";
+import { localStorageKeys } from "../../../app/config/localStorageKeys";
+import { IOutput } from "./IHome";
 
 export default function Home(){
 
@@ -9,15 +11,22 @@ export default function Home(){
     errors,
     handleSubmit,
     register,
-    isLoading
+    isLoading,
+    visible,
+    zipocodeValue,
+    clear,
   } = useHomeController();
 
+  const address = (): IOutput | null => {
+    const data = localStorage.getItem(localStorageKeys.API_DATA);
+    return data ? (JSON.parse(data) as IOutput) : null;
+  };
 
   return(
     <div className="
       w-screen h-screen flex flex-col items-center text-teal-600 bg-zinc-200
     ">
-      <h1 className="text-3xl font-bold tracking-widest mt-14">LOCALIZAR CEP</h1>
+      <h1 className="text-3xl font-bold -tracking-tight mt-14">LOCALIZAR CEP</h1>
       <form
         onSubmit={handleSubmit}
         className="w-11/12 lg:w-[300px] min-h-[200px] max-h-[300px] flex flex-col justify-center items-center gap-6 text-zinc-600"
@@ -27,7 +36,8 @@ export default function Home(){
             type="text"
             placeholder="Exemplo: 0000000"
             className="w-full h-8 rounded-xl px-3 border border-teal-600 focus:border-teal-800 transition-all"
-            {...register("zipocode")}
+            {...register("zipocode", { required: true })}
+
           />
           {errors.zipocode && (
             <span className="
@@ -42,23 +52,55 @@ export default function Home(){
         <div className="w-full flex flex-col justify-center items-center gap-2 text-white">
           <button
             type="submit"
-            className="w-11/12 h-8 flex justify-center items-center bg-teal-600 font-normal text-20 rounded-xl hover:bg-teal-800 transition-all duration-300 tracking-tight"
+            onClick={() => clear()}
+            disabled={!zipocodeValue || zipocodeValue.trim() === ""}
+            className={`
+              w-11/12 h-8 flex justify-center items-center font-normal text-20 rounded-xl
+              transition-all duration-300 tracking-tight
+              ${!zipocodeValue ? "bg-gray-400 cursor-not-allowed" : "bg-teal-800 lg:hover:bg-gray-400"}
+            `}
           >
-            {isLoading ? <Spinner/> : "Buscar"}
+            {isLoading ? <Spinner /> : "Buscar"}
           </button>
           <button
             type="reset"
-            className="w-11/12 h-8 bg-teal-600 font-normal text-20 rounded-xl hover:bg-teal-800 transition-all duration-300 tracking-tight"
+            onClick={()=> clear()}
+            className="w-11/12 h-8 flex justify-center items-center bg-teal-800 font-normal text-20 rounded-xl lg:hover:bg-gray-400 transition-all duration-300 tracking-tight"
           >
             Limpar
           </button>
         </div>
       </form>
 
-      <div className="w-full flex flex-col justify-center items-center gap-4">
-        <h1 className="text-xl font-bold">Detalhes do Endereço</h1>
-
-      </div>
+      {visible && (
+        <div className="w-10/12 flex flex-col items-center gap-4 border-t border-gray-300 text-black font-mono">
+          <h1 className="w-full text-xl text-teal-800 font-bold mt-10">Endereço:</h1>
+          <div className="w-11/12 flex flex-col">
+            <span className="w-11/12 text-md">{`CEP ${address()?.cep}`}</span>
+            <span className="w-11/12 text-md">{`${address()?.street}`}</span>
+            <span className="w-11/12 text-md">{`Bairro ${address()?.neighborhood}`}</span>
+            <span className="w-11/12 text-md">{`${address()?.city} - ${address()?.state}`}</span>
+            <Link
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-11/12 text-md text-teal-600 italic mt-5"
+              to={`https://www.google.com/maps/dir/${address()?.location.coordinates.latitude},${address()?.location.coordinates.longitude}`}
+            >
+              Link do endereço Google maps
+            </Link>
+          </div>
+          {/* <iframe
+            width="100%"
+            height="300"
+            style={{ border: 0 }}
+            loading="lazy"
+            allowFullScreen
+            referrerPolicy="no-referrer-when-downgrade"
+            src={`https://www.google.com/maps/dir/${address()?.location.coordinates.latitude},${address()?.location.coordinates.longitude}`}
+          > teste
+          </iframe> */}
+        </div>
+      )}
     </div>
   );
 }

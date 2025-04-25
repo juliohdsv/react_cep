@@ -17,25 +17,35 @@ type zcFormData = z.infer<typeof schema>
 
 export function useHomeController(){
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [visible, setVisible] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     register,
     handleSubmit: hookFormHandleSubmit,
-    formState: { errors }
+    formState: { errors },
+    watch,
   } = useForm<zcFormData>({
     resolver: zodResolver(schema),
   });
 
+  const zipocodeValue = watch("zipocode");
+  const clear = ()=> {
+    localStorage.removeItem(localStorageKeys.API_DATA);
+    setVisible(false);
+  };
   const handleSubmit = hookFormHandleSubmit(async ({ zipocode })=>{
     try{
+      if(!zipocode) return toast.error("Favor, inserir o cep.");
+      setVisible(false);
       setIsLoading(true);
       await sleep(2000);
       const { data } = await CepApiService.get(`/cep/v2/${zipocode}`);
 
       if(!data) return toast.error("Erro na consulta, tenta novamente.");
       localStorage.setItem(localStorageKeys.API_DATA, JSON.stringify(data));
+
       setIsLoading(false);
-      // https://www.google.com/maps/dir/-23.5336746,-46.5746386
+      setVisible(true);
     }catch{
       toast.error("Server internal error.");
     }
@@ -45,6 +55,9 @@ export function useHomeController(){
     handleSubmit,
     errors,
     register,
-    isLoading
+    isLoading,
+    visible,
+    clear,
+    zipocodeValue
   };
 }

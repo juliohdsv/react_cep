@@ -13,7 +13,9 @@ export interface IOutput{
       longitude: string;
       latitude: string;
     }
+    type: string;
   }
+  service: string;
 }
 
 
