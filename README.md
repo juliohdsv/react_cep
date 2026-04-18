@@ -270,15 +270,4 @@ sequenceDiagram
 
 ---
 
-## Deploy
-
-A aplicação pode ser deployada na **Netlify**:
-
-```bash
-npm run build
-netlify deploy --prod --dir=dist
-```
-
----
-
 **Desenvolvido por Júlio Henrique**
