@@ -48,10 +48,9 @@ export default function Home() {
         throw new Error(`Fetching error: ${response.status}`);
       }
 
-      const {
-        location: { coordinates: { longitude, latitude } } = {},
-        ...data
-      } = await response.json();
+      const data = await response.json();
+      const longitude = data.location.coordinates.longitude;
+      const latitude = data.location.coordinates.latitude;
 
       setAddress({
         ...data,
@@ -71,7 +70,12 @@ export default function Home() {
   return (
     <div className="w-full min-h-screen max-w-screen max-h-screen flex flex-col justify-center items-center text-teal-600 bg-gray-100">
       <div className="w-11/12 min-w-[300px] max-w-[600px] md:w-1/4 lg:w-1/5 flex flex-col justify-center items-center gap-6 text-zinc-600">
-        <img src={GpsIcon} alt="Imagem do marcador gps" className="w-14 h-12" />
+        <img
+          src={GpsIcon}
+          alt="Imagem do marcador gps"
+          className="w-14 h-12"
+          draggable={false}
+        />
 
         <h1 className="w-full text-3xl text-center font-extrabold">
           LOCALIZAR CEP
