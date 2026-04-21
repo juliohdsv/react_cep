@@ -1,5 +1,7 @@
 # React CEP - Buscar Endereços por CEP
 
+Projeto em produção: https://localizarcep.netlify.app/
+
 Uma aplicação React moderna para buscar informações de endereços brasileiros através do código postal (CEP), utilizando a API BrasilAPI.
 
 ## 📋 Índice
